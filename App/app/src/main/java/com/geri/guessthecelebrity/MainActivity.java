@@ -28,31 +28,30 @@ public class MainActivity extends AppCompatActivity {
     Button btn2;
     Button btn3;
     Button btn4;
-    int goodAnswer;
+    boolean newGame = true;
     String html;
-    boolean theGoodAnswer;
 
     public void click1(View view){
-        if(goodAnswer == 1){
+        if(btn1.getTag().equals(1)){
             Toast.makeText(this, "Good Answer!", Toast.LENGTH_SHORT).show();
             Game();
-        }else{
+        }else if(btn1.getTag().equals(2)){
             Toast.makeText(this, "Wrong Answer!", Toast.LENGTH_SHORT).show();
             Game();
         }
     }
 
     public void click2(View view){
-        if(goodAnswer == 2){
+        if(btn2.getTag().equals(1)){
             Toast.makeText(this, "Good Answer!", Toast.LENGTH_SHORT).show();
             Game();
-        }else{
+        }else {
             Toast.makeText(this, "Wrong Answer!", Toast.LENGTH_SHORT).show();
             Game();
         }
     }
     public void click3(View view){
-        if(goodAnswer == 3){
+        if(btn3.getTag().equals(1)){
             Toast.makeText(this, "Good Answer!", Toast.LENGTH_SHORT).show();
             Game();
         }else{
@@ -61,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void click4(View view){
-        if(goodAnswer == 4){
+        if(btn4.getTag().equals(1)){
             Toast.makeText(this, "Good Answer!", Toast.LENGTH_SHORT).show();
             Game();
         }else{
@@ -88,100 +87,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void Game(){
-        Pattern pattern = Pattern.compile("img src=\"(.*?)\"");
-        Matcher matcher = pattern.matcher(html);
 
-        ArrayList<String> pictures = new ArrayList<>();
-        ArrayList<String> names = new ArrayList<>();
-        ArrayList<String> picturesAndNames = new ArrayList<>();
-
-        pictures.clear();
-        names.clear();
-        picturesAndNames.clear();
-
-        while (matcher.find()){
-            Log.i("Pictures" , matcher.group(1));
-            pictures.add(matcher.group(1));
-        }
-
-
-        pattern = Pattern.compile("alt=\"(.*?)\"");
-        matcher = pattern.matcher(html);
-        while (matcher.find()){
-            Log.i("Names", matcher.group(1));
-            names.add(matcher.group(1));
-        }
-
-        for(int i = 0; i < 8; i++){
-            picturesAndNames.add(pictures.get(i) + " + " + names.get(i));
-            Log.i("Pictures And Names", picturesAndNames.get(i));
-        }
-
-        Random random = new Random();
-        int bound = random.nextInt(9);
-        int buttonRand = random.nextInt(3);
-        ImageDownloader task = new ImageDownloader();
-
-        Log.i("Random", Integer.toString(bound));
-        try {
-            Bitmap myImage = task.execute(pictures.get(bound)).get();
-            imageView.setImageBitmap(myImage);
-            Log.i("Info", "Bitmap updated");
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        btn1.setText(names.get(bound));
-        btn1.setTag(2);
-        bound = random.nextInt(9);
-        btn2.setText(names.get(bound));
-        btn2.setTag(2);
-        bound = random.nextInt(9);
-        btn3.setText(names.get(bound));
-        btn3.setTag(2);
-        bound = random.nextInt(9);
-        btn4.setText(names.get(bound));
-        btn4.setTag(2);
-
-        for(int i = 0; i < 8; i++){
-            if(pictures.get(bound).equals(pictures.get(i))) if (buttonRand == 0) {
-                btn1.setText(names.get(i));
-                goodAnswer = 1;
-                btn1.setTag(1);
-            } else if (buttonRand == 1) {
-                btn2.setText(names.get(i));
-                goodAnswer = 2;
-                btn2.setTag(1);
-            } else if (buttonRand == 2) {
-                btn3.setText(names.get(i));
-                goodAnswer = 3;
-                btn3.setTag(1);
-            } else if (buttonRand == 3) {
-                btn4.setText(names.get(i));
-                goodAnswer = 4;
-                btn4.setTag(1);
-            }
-        }
-
-
-        while(btn1.getText().equals(btn2.getText()) || btn1.getText().equals(btn3.getText()) || btn1.getText().equals(btn4.getText())&& btn1.getTag().equals(2)){
-            bound = random.nextInt(9);
-            btn1.setText(names.get(bound));
-        }
-        while(btn2.getText().equals(btn1.getText()) || btn2.getText().equals(btn3.getText()) || btn2.getText().equals(btn4.getText())&& btn2.getTag().equals(2)){
-            bound = random.nextInt(9);
-            btn2.setText(names.get(bound));
-        }
-        while(btn3.getText().equals(btn1.getText()) || btn3.getText().equals(btn2.getText()) || btn3.getText().equals(btn4.getText())&& btn3.getTag().equals(2)){
-            bound = random.nextInt(9);
-            btn3.setText(names.get(bound));
-        }while(btn4.getText().equals(btn1.getText()) || btn4.getText().equals(btn2.getText()) || btn4.getText().equals(btn3.getText())&& btn4.getTag().equals(2)){
-            bound = random.nextInt(9);
-            btn4.setText(names.get(bound));
-        }
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -349,29 +255,133 @@ public class MainActivity extends AppCompatActivity {
                 "\t\t\t</div>\n" +
                 "\t\t\t\t\t<div class=\"channelListEntry\">\n" +
                 "\t\t\t\t<a href=\"/kenza\">\n" +
-                "\t\t\t\t\t<div class=\"image\">\n" +
-                "\t\t\t\t\t\t<img src=\"http://cdn.posh24.se/images/:profile/c/1393531\" alt=\"Kenza\">\n" +
-                "\t\t\t\t\t</div>\n" +
-                "\t\t\t\t\t\n" +
-                "\t\t\t\t\t \n" +
-                "\t\t\t\t\t\t\t\t\t\t<div class=\"info\">\n" +
-                "\t\t\t\t\t\t<div class=\"status-container\">\n" +
-                "\t\t\t\t\t\t\t<div class=\"position\">8</div>\n" +
-                "\t\t\t\t\t\t\t \n" +
-                "\t\t\t\t\t\t\t\t<div class=\"img neg\"></div>\n" +
-                "\t\t\t\t\t\t\t\t<div class=\"value\">-4</div>\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t\t\t\n" +
-                "\t\t\t\t\t\t</div>\n" +
-                "\t\t\t\t\t\t<div class=\"name\">\n" +
-                "\t\t\t\t\t\t\tKenza\n" +
-                "\t\t\t\t\t\t</div>\n" +
-                "\t\t\t\t\t</div>\n" +
-                "\t\t\t\t</a>\n" +
-                "\t\t\t</div>\n" +
-                "\t\t\t</div>";
-
+                "\t\t\t\t\t<div class=\"image\">\n";
 
                 Game();
+
+
+    }
+
+    public void Game(){
+            newGame = false;
+            Pattern pattern = Pattern.compile("img src=\"(.*?)\"");
+            Matcher matcher = pattern.matcher(html);
+
+            ArrayList<String> pictures = new ArrayList<>();
+            ArrayList<String> names = new ArrayList<>();
+            ArrayList<String> picturesAndNames = new ArrayList<>();
+
+
+
+            while (matcher.find()){
+                Log.i("Pictures" , matcher.group(1));
+                pictures.add(matcher.group(1));
+            }
+
+
+            pattern = Pattern.compile("alt=\"(.*?)\"");
+            matcher = pattern.matcher(html);
+            while (matcher.find()){
+                Log.i("Names", matcher.group(1));
+                names.add(matcher.group(1));
+            }
+
+            for(int i = 0; i < 7; i++){
+                picturesAndNames.add(pictures.get(i) + " + " + names.get(i));
+                Log.i("Pictures And Names", picturesAndNames.get(i));
+            }
+
+            Random random = new Random();
+            int bound = random.nextInt(7);
+            int buttonRand = random.nextInt(4);
+            ImageDownloader task = new ImageDownloader();
+
+            Log.i("Random", Integer.toString(bound));
+
+
+            try {
+                Bitmap myImage = task.execute(pictures.get(bound)).get();
+                imageView.setImageBitmap(myImage);
+                Log.i("Info", "Bitmap updated");
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+
+
+
+            btn1.setTag(2);
+            btn2.setTag(2);
+            btn3.setTag(2);
+            btn4.setTag(2);
+
+
+            for(int i = 0; i < 7; i++){
+
+                if(pictures.get(bound).equals(pictures.get(i))){
+                    if (buttonRand == 0) {
+                        btn1.setText(names.get(i));
+                        names.remove(i);
+                        btn1.setTag(1);
+                        Log.i("Good Answer", btn1.getText().toString());
+                    } else if (buttonRand == 1) {
+                        btn2.setText(names.get(i));
+                        names.remove(i);
+                        btn2.setTag(1);
+                        Log.i("Good Answer", btn2.getText().toString());
+                    } else if (buttonRand == 2) {
+                        btn3.setText(names.get(i));
+                        names.remove(i);
+                        btn3.setTag(1);
+                        Log.i("Good Answer", btn3.getText().toString());
+                    } else if (buttonRand == 3) {
+                        btn4.setText(names.get(i));
+                        names.remove(i);
+                        btn4.setTag(1);
+                        Log.i("Good Answer", btn4.getText().toString());
+                    }
+                }
+
+            }
+
+
+            bound = random.nextInt(6);
+
+            if(btn1.getTag().equals(2)){
+                btn1.setText(names.get(bound));
+                bound = random.nextInt(6);
+            }
+            if(btn2.getTag().equals(2)){
+                btn2.setText(names.get(bound));
+                bound = random.nextInt(6);
+            }
+            if(btn3.getTag().equals(2)){
+                btn3.setText(names.get(bound));
+                bound = random.nextInt(6);
+            }
+            if(btn4.getTag().equals(2)){
+                btn4.setText(names.get(bound));
+            }
+
+
+            while(btn1.getText().equals(btn2.getText()) || btn1.getText().equals(btn3.getText()) || btn1.getText().equals(btn4.getText())&& btn1.getTag().equals(2)){
+                bound = random.nextInt(6);
+                btn1.setText(names.get(bound));
+            }
+            while(btn2.getText().equals(btn1.getText()) || btn2.getText().equals(btn3.getText()) || btn2.getText().equals(btn4.getText())&& btn2.getTag().equals(2)){
+                bound = random.nextInt(6);
+                btn2.setText(names.get(bound));
+            }
+            while(btn3.getText().equals(btn1.getText()) || btn3.getText().equals(btn2.getText()) || btn3.getText().equals(btn4.getText())&& btn3.getTag().equals(2)){
+                bound = random.nextInt(6);
+                btn3.setText(names.get(bound));
+            }while(btn4.getText().equals(btn1.getText()) || btn4.getText().equals(btn2.getText()) || btn4.getText().equals(btn3.getText())&& btn4.getTag().equals(2)){
+                bound = random.nextInt(6);
+                btn4.setText(names.get(bound));
+            }
+
+
+
 
     }
 }
